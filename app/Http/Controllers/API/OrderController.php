@@ -21,22 +21,13 @@ class OrderController extends Controller
     public function index(): JsonResponse
     {
         $orders = $this->orderService->getPaginated();
-        if(count($orders)>0)
-        {
+      
             return new JsonResponse([
                 'data' => OrderResource::collection($orders),
                 'status' => 'success',
                 'message' => 'Order history retrieved successfully',
             ], 200);
-        }   
-        else
-        {
-            return new JsonResponse([
-                'data' => OrderResource::collection($orders),
-                'status' => 'success',
-                'message' => 'No order has been created yet!',
-            ], 200);
-        }
+       
         
     }
 
