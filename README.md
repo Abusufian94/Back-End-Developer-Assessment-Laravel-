@@ -1,61 +1,93 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Back-End Developer Assessment (Laravel)
+## Objective:
+Build a small e-commerce product management system with API endpoints using
+Laravel.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Laravel Inventory API:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This is a Laravel-based RESTful API for managing an inventory system, built as part of a Back-End Developer Assessment. The API allows administrators to manage products, categories, and inventory, with features like file-based caching to optimize performance for listing endpoints.
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Product Management: Create, update, delete, and retrieve products with attributes like name, price, stock quantity, and images.
+2. Category Management: Assign products to categories and filter by category.
+3. Inventory Listing: Retrieve paginated product listings with filters for category and low stock thresholds.
+4. File-Based Caching: Optimizes the GET /api/v1/inventory endpoint by caching results in the filesystem.
+5. Authentication: Secured with Laravel Sanctum.
+6. Spatie : Used Spatie for future role based access control requiring admin role for inventory operations.
+7. Repository Pattern & services : Added Repoitory pattern with repository and services to separate the business logic and code logic which enhance the scalibility.
+8. Form Request Validation : Created Request form validation for clean coding to sanitize the request without queries.
+9. Resource Response : Added Laravel Resource to sanitize the response.
+10. Custom Admin Middleware : To check the user is admin and and send the reponse accordingly.
+11. Exception : Added Custom Exception for error handling.
+12. Service Provider : Added custom providers to bind the Repositories and services.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Prerequisites
+1. Docker and Docker Compose (for Laravel Sail).
+2. PHP >= 8.2
+3. Composer
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## Setup Instructions
+#### 1. Clone the Repository : git clone https://github.com/Abusufian94/Back-End-Developer-Assessment-Laravel-.git
+#### 2. cd Back-End-Developer-Assessment-Laravel-
+#### 3. Install Dependencies : composer install
+#### 4. Configure Environment : 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+                        APP_URL=http://localhost:8000
 
-### Premium Partners
+                        CACHE_DRIVER=file
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+                        SANCTUM_STATEFUL_DOMAINS=localhost,127.0.0.1,::1
 
-## Contributing
+                        DB_CONNECTION=mysql
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+                        DB_HOST=mysql
 
-## Code of Conduct
+                        DB_PORT=3306
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+                        DB_DATABASE=laravel
 
-## Security Vulnerabilities
+                        DB_USERNAME=sail
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+                        DB_PASSWORD=password
 
-## License
+#### 5. Start Laravel Sail : ./vendor/bin/sail up -d
+#### 6. Run Migrations : ./vendor/bin/sail artisan migrate
+#### 7. Seed in to Database : ./vendor/bin/sail artisan db:seed 
+#### 8. Link the storage : ./vendor/bin/sail artisan link:storage
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## API Usage 
+### Base url 
+#### http://localhost:8000
+### Authentication
+#### All endpoints require an Authorization header with a Bearer token
+Authorization: Bearer <token>
+Accept: application/json
+#### Key Endpoints
+##### Create a Category
+        Method: POST
+        URL: /api/v1/admin/categories
+        Body (JSON):
+         {
+                "name": "Electronics",
+                "slug": "electronics"
+         }
+        Response (201):
+        {
+            "data":
+            {
+                "id": 1,
+                "name": "Electronics",
+                "slug": "electronics"
+            },
+            "status": "success"
+        }
+
+
+
